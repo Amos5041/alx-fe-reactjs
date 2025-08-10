@@ -1,10 +1,11 @@
+// src/App.jsx
 import React from 'react';
-import SearchBar from './components/SearchBar';
+import Search from './components/Search';
 function App() {
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>GitHub User Search</h1>
-      <SearchBar />
+    <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px' }}>
+      <h1 style={{ textAlign: 'center' }}>GitHub User Search</h1>
+      <Search />
     </div>
   );
 }
