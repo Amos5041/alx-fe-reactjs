@@ -1,8 +1,9 @@
-// recipeStore.js
 import create from 'zustand';
 export const useRecipeStore = create((set, get) => ({
   recipes: [],
-  // existing actions
+  favorites: [],
+  recommendations: [],
+  // Recipe actions
   addRecipe: (recipe) =>
     set((state) => ({
       recipes: [...state.recipes, { ...recipe, id: generateId() }],
@@ -16,19 +17,34 @@ export const useRecipeStore = create((set, get) => ({
   deleteRecipe: (id) =>
     set((state) => ({
       recipes: state.recipes.filter((r) => r.id !== id),
+      favorites: state.favorites.filter((favId) => favId !== id), // remove from favorites too
     })),
-  // new search-related state/actions
-  searchTerm: '',
-  setSearchTerm: (term) => set({ searchTerm: term }),
-  // derived recipes filtered by search term
-  filteredRecipes: () => {
-    const { recipes, searchTerm } = get();
-    if (!searchTerm.trim()) return recipes;
-    return recipes.filter((r) =>
-      r.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // Favorites actions
+  addFavorite: (recipeId) =>
+    set((state) =>
+      state.favorites.includes(recipeId)
+        ? state
+        : { favorites: [...state.favorites, recipeId] }
+    ),
+  removeFavorite: (recipeId) =>
+    set((state) => ({
+      favorites: state.favorites.filter((id) => id !== recipeId),
+    })),
+  // Recommendations generator (simple ingredient overlap)
+  generateRecommendations: () => {
+    const { recipes, favorites } = get();
+    const favoriteRecipes = recipes.filter((r) => favorites.includes(r.id));
+    const recommended = recipes.filter(
+      (r) =>
+        !favorites.includes(r.id) &&
+        favoriteRecipes.some((fav) =>
+          r.ingredients?.some((ing) => fav.ingredients?.includes(ing))
+        )
     );
+    set({ recommendations: recommended });
   },
 }));
+// Helper to generate unique IDs
 function generateId() {
   return String(Date.now()) + Math.random().toString(36).slice(2, 8);
 }
