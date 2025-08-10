@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRecipeStore } from '../recipeStore';
 import { useNavigate, useParams } from 'react-router-dom';
-export function EditRecipeForm() {
+function EditRecipeForm() {
   const { id } = useParams();
   const recipe = useRecipeStore((state) =>
     state.recipes.find((r) => r.id === id)
@@ -21,8 +21,8 @@ export function EditRecipeForm() {
     }
   }, [recipe]);
   if (!recipe) return <div>Recipe not found.</div>;
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit(event) {
+    event.preventDefault(); // <-- added here
     updateRecipe(id, {
       title,
       description,
@@ -58,3 +58,4 @@ export function EditRecipeForm() {
     </form>
   );
 }
+export default EditRecipeForm;
