@@ -1,9 +1,13 @@
-import WelcomeMessage from './components/WelcomeMessage.jsx'
+import Header from './Header';
+import MainContent from './MainContent';
+import Footer from './Footer';
 function App() {
   return (
     <div>
-      <WelcomeMessage />
+      <Header />
+      <MainContent />
+      <Footer />
     </div>
-  )
+  );
 }
-export default App
+export default App;
