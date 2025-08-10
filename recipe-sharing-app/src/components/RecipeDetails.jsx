@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useRecipeStore } from '../recipeStore';
 import { DeleteRecipeButton } from './DeleteRecipeButton';
-export function RecipeDetails() {
+function RecipeDetails() {
   const { id } = useParams();
   const recipe = useRecipeStore((state) =>
     state.recipes.find((r) => r.id === id)
@@ -26,10 +26,12 @@ export function RecipeDetails() {
         ))}
       </ol>
 
+      {/* recipe.id referenced here */}
       <div style={{ marginTop: '1rem' }}>
-        <Link to={`/recipes/${id}/edit`}>Edit</Link>
-        <DeleteRecipeButton id={id} />
+        <Link to={`/recipes/${recipe.id}/edit`}>Edit</Link>
+        <DeleteRecipeButton id={recipe.id} />
       </div>
     </div>
   );
 }
+export default RecipeDetails;
